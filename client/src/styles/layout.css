@@ -1,0 +1,48 @@
+.navbar { background: #fff; border-bottom: 1px solid #e5e7eb; padding: 0 20px; height: 52px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 50; box-shadow: 0 1px 4px rgba(0,0,0,.06); }
+.nav-brand { font-size: 20px; font-weight: 700; color: #2563eb; display: flex; align-items: center; gap: 7px; text-decoration: none; }
+.nav-brand svg { width: 24px; height: 24px; }
+.nav-search { flex: 1; max-width: 320px; margin: 0 20px; }
+.nav-search input { width: 100%; border: 1px solid #d1d5db; border-radius: 20px; padding: 7px 14px; font-size: 13px; outline: none; background: #f9fafb; }
+.nav-search input:focus { border-color: #2563eb; background: #fff; }
+.nav-right { display: flex; align-items: center; gap: 10px; }
+.nav-link { font-size: 13px; color: #374151; font-weight: 500; text-decoration: none; }
+.nav-link:hover { color: #2563eb; }
+.nav-avatar { width: 32px; height: 32px; border-radius: 50%; background: #2563eb; color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 13px; cursor: pointer; }
+.nav-btn { padding: 6px 14px; border-radius: 14px; font-size: 13px; font-weight: 500; cursor: pointer; text-decoration: none; border: none; }
+.nav-btn.outline { border: 1px solid #2563eb; color: #2563eb; background: #fff; }
+.nav-btn.outline:hover { background: #eff6ff; }
+.nav-btn.primary { background: #2563eb; color: #fff; }
+.nav-btn.primary:hover { background: #1d4ed8; }
+.nav-btn.ghost { color: #6b7280; background: none; }
+.nav-btn.ghost:hover { color: #374151; }
+
+.page-layout { max-width: 1080px; margin: 0 auto; padding: 16px; display: grid; grid-template-columns: 200px 1fr 260px; gap: 16px; }
+@media (max-width: 900px) { .page-layout { grid-template-columns: 1fr; } .sidebar, .rightbar { display: none; } }
+
+.sidebar { position: sticky; top: 62px; height: fit-content; }
+.sidebar-card { background: #fff; border: 1px solid #e5e7eb; border-radius: 10px; padding: 12px; }
+.slink { display: flex; align-items: center; gap: 9px; padding: 8px 10px; border-radius: 7px; font-size: 13px; font-weight: 500; color: #374151; cursor: pointer; text-decoration: none; transition: background .15s; }
+.slink:hover, .slink.active { background: #eff6ff; color: #2563eb; }
+.slink svg { width: 16px; height: 16px; flex-shrink: 0; }
+.ssect { font-size: 11px; font-weight: 600; color: #9ca3af; text-transform: uppercase; letter-spacing: .05em; padding: 10px 10px 4px; }
+.scomm { display: flex; align-items: center; gap: 7px; padding: 6px 10px; border-radius: 7px; font-size: 12px; color: #374151; cursor: pointer; text-decoration: none; }
+.scomm:hover { background: #f3f4f6; }
+.cdot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+
+.rightbar { position: sticky; top: 62px; height: fit-content; display: flex; flex-direction: column; gap: 14px; }
+.widget { background: #fff; border: 1px solid #e5e7eb; border-radius: 10px; padding: 14px; }
+.widget-title { font-size: 13px; font-weight: 600; color: #111827; margin-bottom: 10px; }
+.comm-item { display: flex; align-items: center; justify-content: space-between; padding: 7px 0; border-bottom: 1px solid #f3f4f6; }
+.comm-item:last-child { border-bottom: none; }
+.comm-item-left { display: flex; align-items: center; gap: 7px; }
+.comm-item-name { font-size: 12px; font-weight: 500; color: #374151; }
+.comm-item-mems { font-size: 11px; color: #9ca3af; }
+.join-btn { font-size: 11px; padding: 3px 10px; border-radius: 10px; cursor: pointer; font-weight: 500; transition: all .15s; }
+.join-btn.join   { border: 1px solid #2563eb; color: #2563eb; background: #fff; }
+.join-btn.join:hover { background: #eff6ff; }
+.join-btn.joined { background: #2563eb; color: #fff; border: 1px solid #2563eb; }
+.trending-tags { display: flex; flex-wrap: wrap; gap: 5px; }
+.ttag { padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: 500; background: #f3f4f6; color: #374151; cursor: pointer; border: 1px solid transparent; }
+.ttag:hover { border-color: #93c5fd; background: #eff6ff; color: #2563eb; }
+
+.rules-list { padding-left: 16px; font-size: 12px; color: #374151; line-height: 2; }

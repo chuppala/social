@@ -1,0 +1,26 @@
+.comments-wrap { border-top: 1px solid #f3f4f6; padding: 12px 14px; }
+.comment { display: flex; gap: 8px; margin-bottom: 10px; }
+.cav { width: 30px; height: 30px; border-radius: 50%; background: #6b7280; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; flex-shrink: 0; }
+.cbubble { flex: 1; }
+.cheader { display: flex; align-items: center; gap: 8px; margin-bottom: 3px; flex-wrap: wrap; }
+.cname { font-size: 12px; font-weight: 600; color: #111827; }
+.ctime { font-size: 11px; color: #9ca3af; }
+.flag-badge { font-size: 10px; background: #fffbeb; color: #92400e; border: 1px solid #fde68a; padding: 1px 6px; border-radius: 8px; }
+.ctext { font-size: 13px; color: #374151; background: #f3f4f6; padding: 8px 11px; border-radius: 0 8px 8px 8px; line-height: 1.5; }
+.comment-flagged .ctext { background: #fef2f2; border: 1px solid #fecaca; }
+
+.comment-form { display: flex; gap: 8px; margin-top: 10px; align-items: center; }
+.comment-input { flex: 1; border: 1px solid #d1d5db; border-radius: 18px; padding: 8px 13px; font-size: 13px; outline: none; color: #1f2937; background: #fff; }
+.comment-input:focus { border-color: #2563eb; }
+.comment-send { padding: 8px 16px; border-radius: 18px; background: #2563eb; color: #fff; font-size: 13px; font-weight: 500; cursor: pointer; border: none; white-space: nowrap; }
+.comment-send:hover { background: #1d4ed8; }
+.comment-send:disabled { background: #93c5fd; cursor: not-allowed; }
+.comment-login { font-size: 12px; color: #9ca3af; text-align: center; padding: 10px 0 2px; }
+
+.warn-box { background: #fef2f2; border: 1px solid #fecaca; border-radius: 8px; padding: 12px 14px; margin-bottom: 10px; }
+.warn-box.warn-error { background: #fef2f2; }
+.warn-title { font-size: 13px; font-weight: 600; color: #991b1b; margin-bottom: 4px; display: flex; align-items: center; gap: 8px; }
+.warn-sev { font-size: 10px; background: #991b1b; color: #fff; padding: 1px 6px; border-radius: 8px; font-weight: 600; }
+.warn-body { font-size: 12px; color: #7f1d1d; line-height: 1.6; }
+.warn-dismiss { margin-top: 8px; padding: 5px 14px; border-radius: 6px; background: #ef4444; color: #fff; font-size: 12px; font-weight: 500; border: none; cursor: pointer; }
+.warn-dismiss:hover { background: #dc2626; }
