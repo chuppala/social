@@ -53,13 +53,38 @@ export default function Sidebar({ communities }) {
         </>)}
 
         {/* Explore */}
-        <div className="ssect">Explore</div>
-        {communities.filter(c => !joined.find(j => j._id===c._id)).slice(0,5).map(c => (
-          <Link key={c._id} className="scomm" to={`/c/${c.name}`}>
-            <div className="cdot" style={{background:c.color||"#2563eb"}} />
-            c/{c.name}
-          </Link>
-        ))}
+<div className="ssect">Explore</div>
+
+{communities
+  .filter(c => !joined.find(j => j._id === c._id))
+  .slice(0,5)
+  .map(c => (
+    <Link
+      key={c._id}
+      className="scomm"
+      to={`/c/${c.name}`}
+    >
+      <div
+        className="cdot"
+        style={{
+          background:c.color || "#2563eb"
+        }}
+      />
+      c/{c.name}
+    </Link>
+))}
+
+<Link
+  to="/communities"
+  className="scomm"
+  style={{
+    color:"#2563eb",
+    fontWeight:"700"
+  }}
+>
+  View All Communities →
+</Link>
+      
       </div>
     </aside>
   );

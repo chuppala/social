@@ -123,27 +123,47 @@ export default function SignUp() {
   };
 
   return (
-    <div className="auth-page">
-      <div className="auth-card">
-        <div className="auth-header">
-          <div className="auth-logo">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-              <circle cx="12" cy="12" r="10"/>
-              <path d="M8 9h8M8 12h6M8 15h4"/>
-            </svg>
-            SocialEcho
-          </div>
-          <p className="auth-tagline">Your community, your voice</p>
-        </div>
+    <div className="split-auth">
 
-        <div className="auth-tabs">
-          <Link to="/signin" className="auth-tab">Sign In</Link>
-          <div className="auth-tab active">Sign Up</div>
-        </div>
+  <div className="split-left">
 
-        <div className="auth-body">
-          <StepBar current={step} />
+    <div className="auth-header">
+      <div className="auth-logo">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+          <circle cx="12" cy="12" r="10"/>
+          <path d="M8 9h8M8 12h6M8 15h4"/>
+        </svg>
+        SocialEcho
+      </div>
 
+      <p className="auth-tagline">
+        Your community, your voice
+      </p>
+    </div>
+
+    <div className="auth-tabs">
+      <Link to="/signin" className="auth-tab">
+        Sign In
+      </Link>
+
+      <div className="auth-tab active">
+        Sign Up
+      </div>
+    </div>
+
+    {/* Progress bar and form here */}
+<div className="auth-body">
+
+  <div className="signup-progress">
+    <div
+      className="signup-progress-fill"
+      style={{ width: `${(step + 1) * 25}%` }}
+    />
+  </div>
+
+  <p className="step-text">
+    Step {step + 1} of 4
+  </p>
           {error   && <div className="alert alert-error">{error}</div>}
           {success && <div className="alert alert-success">{success}</div>}
 
@@ -240,10 +260,38 @@ export default function SignUp() {
             <div className="step-content">
               <div className="alert alert-success">🎉 Almost done! Add your profile details.</div>
               <div className="form-group">
-                <label>Bio <span style={{ color:"#9ca3af", fontWeight:400 }}>(optional)</span></label>
-                <textarea value={form.bio} onChange={e => set("bio", e.target.value)}
-                  placeholder="Tell the community about yourself..." rows={3} />
-              </div>
+  <label>Profile Picture</label>
+
+  <input
+    type="file"
+    accept="image/*"
+  />
+</div>
+
+<div className="form-group">
+  <label>Location (Optional)</label>
+
+  <input
+    placeholder="Hyderabad, India"
+  />
+</div>
+
+<div className="form-group">
+  <label>
+    Bio
+    <span style={{ color:"#9ca3af", fontWeight:400 }}>
+      (optional)
+    </span>
+  </label>
+
+  <textarea
+    value={form.bio}
+    onChange={e => set("bio", e.target.value)}
+    placeholder="Tell the community about yourself..."
+    rows={3}
+  />
+  
+</div>
               <div className="form-group">
                 <label>Interests <span style={{ color:"#9ca3af", fontWeight:400 }}>(pick up to 3)</span></label>
                 <div className="interest-grid">
@@ -258,8 +306,27 @@ export default function SignUp() {
               </button>
             </div>
           )}
+</div> {/* auth-body */}
+
+</div> {/* split-left */}
+
+<div className="split-right">
+  <img
+    src="/login-illustration.svg"
+    alt="SocialEcho"
+    className="split-image"
+  />
+
+  <h2>Build Communities.</h2>
+  <h2>Share Ideas.</h2>
+  <h2>Make Connections.</h2>
+
+  <p>
+    Join thousands of communities,
+    share knowledge and build meaningful discussions.
+  </p>
+
         </div>
       </div>
-    </div>
   );
 }

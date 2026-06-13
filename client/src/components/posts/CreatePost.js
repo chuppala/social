@@ -9,11 +9,25 @@ export default function CreatePost({ communities, onCreated }) {
   const [content, setContent] = useState("");
   const [comm,    setComm]    = useState("");
   const [tag,     setTag]     = useState("");
+  const [image, setImage] = useState("");
   const [loading, setLoading] = useState(false);
   const [error,   setError]   = useState("");
   const [warn,    setWarn]    = useState("");
 
   const reset = () => { setTitle(""); setContent(""); setComm(""); setTag(""); setError(""); setWarn(""); };
+  const handleImage = (e) => {
+  const file = e.target.files[0];
+
+  if (!file) return;
+
+  const reader = new FileReader();
+
+  reader.onloadend = () => {
+    setImage(reader.result);
+  };
+
+  reader.readAsDataURL(file);
+};
 
   const handleSubmit = async () => {
     setError(""); setWarn("");
@@ -22,7 +36,13 @@ export default function CreatePost({ communities, onCreated }) {
     if (!comm)           return setError("Please select a community.");
     setLoading(true);
     try {
-      const res = await api.post("/posts", { title, content, community: comm, tag });
+      const res = await api.post("/posts", {
+  title,
+  content,
+  community: comm,
+  tag,
+  image
+});
       onCreated(res.data.post);
       if (res.data.flagged) {
         setWarn(`⚠️ Flagged: ${res.data.flagReason}. Post is under review.`);
@@ -60,6 +80,11 @@ export default function CreatePost({ communities, onCreated }) {
       </select>
       <input  className="cf-input"   value={title}   onChange={e=>setTitle(e.target.value)}   placeholder="Post title *" />
       <textarea className="cf-textarea" value={content} onChange={e=>setContent(e.target.value)} placeholder="Write your post content here... *" rows={5} />
+      <input
+  type="file"
+  accept="image/*"
+  onChange={handleImage}
+/>
       <input  className="cf-input"   value={tag}     onChange={e=>setTag(e.target.value)}     placeholder="Tag (optional, e.g. Discussion, Question)" style={{marginBottom:0}} />
       <div style={{fontSize:11,color:"#9ca3af",margin:"6px 0 10px"}}>⚠️ Posts with violent or abusive content will be automatically flagged.</div>
       <div className="cf-actions">

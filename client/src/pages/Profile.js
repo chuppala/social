@@ -241,7 +241,7 @@ export default function Profile() {
               </div>
             </div>
           )}
-
+          
           {/* Upload hint */}
           {isMe && (
             <div style={{fontSize:11,color:"#9ca3af",marginTop:8}}>

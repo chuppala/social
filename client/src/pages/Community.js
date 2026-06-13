@@ -39,6 +39,8 @@ export default function Community() {
       const res = await api.post(`/communities/${community._id}/join`);
       setJoined(res.data.joined);
       setMemberCount(res.data.memberCount);
+
+      window.location.reload();
     } catch {}
   };
 

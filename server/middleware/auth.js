@@ -33,5 +33,18 @@ const requireVerified = (req, res, next) => {
     return res.status(403).json({ message: "Please verify your email first.", needsVerification: true });
   next();
 };
+const adminOnly = (req, res, next) => {
+  if (!req.user || req.user.role !== "admin") {
+    return res.status(403).json({
+      message: "Admin access required."
+    });
+  }
 
-module.exports = { protect, optionalAuth, requireVerified };
+  next();
+};
+module.exports = {
+  protect,
+  optionalAuth,
+  requireVerified,
+  adminOnly
+};

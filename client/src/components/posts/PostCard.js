@@ -67,8 +67,8 @@ export default function PostCard({ post: initialPost, onDelete }) {
       setShowDelConfirm(false);
       if (onDelete) onDelete(post._id);
     } catch (e) {
-      alert(e.response?.data?.message || "Failed to delete post.");
-    }
+  console.error(e);
+}
   };
 
   if (deleted) return null;
@@ -104,9 +104,22 @@ export default function PostCard({ post: initialPost, onDelete }) {
 
       <div className="post-header">
         <div className="post-user">
-          <Link to={`/u/${post.author?.username}`} className="post-avatar">
-            {post.author?.firstName?.[0]?.toUpperCase() || "?"}
-          </Link>
+         <Link to={`/u/${post.author?.username}`} className="post-avatar">
+  {post.author?.avatar ? (
+    <img
+      src={post.author.avatar}
+      alt="Profile"
+      style={{
+        width: "40px",
+        height: "40px",
+        borderRadius: "50%",
+        objectFit: "cover"
+      }}
+    />
+  ) : (
+    post.author?.firstName?.[0]?.toUpperCase() || "?"
+  )}
+</Link>
           <div className="post-user-info">
             <Link to={`/u/${post.author?.username}`} className="post-author">
               {post.author?.firstName} {post.author?.lastName}
@@ -128,6 +141,17 @@ export default function PostCard({ post: initialPost, onDelete }) {
         {post.tag && <div className="post-tag">{post.tag}</div>}
         <div className="post-title">{post.title}</div>
         <p className="post-content">{post.content}</p>
+        {post.image && (
+  <img
+    src={post.image}
+    alt="Post"
+    style={{
+      width: "100%",
+      borderRadius: "12px",
+      marginTop: "10px"
+    }}
+  />
+)}
         {post.isFlagged && post.flagReason && (
           <div style={{background:"#fffbeb",border:"1px solid #fde68a",borderRadius:8,
             padding:"7px 12px",fontSize:12,color:"#78350f",marginTop:6}}>

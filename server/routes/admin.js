@@ -113,4 +113,79 @@ router.put("/comments/:id/remove", protect, isAdmin, async (req,res) => {
   } catch { res.status(500).json({ message:"Server error." }); }
 });
 
+router.put("/users/:id/make-moderator", protect, isAdmin, async (req, res) => {
+  try {
+
+    const { communityId } = req.body;
+
+    const user = await User.findById(req.params.id);
+
+    if (!user)
+      return res.status(404).json({
+        message: "User not found."
+      });
+
+    const community = await Community.findById(communityId);
+
+    if (!community)
+      return res.status(404).json({
+        message: "Community not found."
+      });
+
+    if (user.role === "admin")
+      return res.status(400).json({
+        message: "Admin cannot be changed."
+      });
+
+    user.role = "moderator";
+
+    if (
+      !community.moderators
+        .map(id => id.toString())
+        .includes(user._id.toString())
+    ) {
+      community.moderators.push(user._id);
+    }
+
+    await user.save();
+    await community.save();
+
+    res.json({
+      message: `${user.username} is now moderator of c/${community.name}`
+    });
+
+  } catch (err) {
+    res.status(500).json({
+      message: "Server error."
+    });
+  }
+});
+router.put("/users/:id/remove-moderator", protect, isAdmin, async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id);
+
+    if (!user)
+      return res.status(404).json({
+        message: "User not found."
+      });
+
+    if (user.role === "admin")
+      return res.status(400).json({
+        message: "Admin cannot be changed."
+      });
+
+    user.role = "user";
+
+    await user.save();
+
+    res.json({
+      message: "Moderator removed."
+    });
+
+  } catch {
+    res.status(500).json({
+      message: "Server error."
+    });
+  }
+});
 module.exports = router;

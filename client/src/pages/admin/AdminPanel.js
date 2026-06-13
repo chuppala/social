@@ -34,6 +34,17 @@ const S = {
   th:         { textAlign:"left", padding:"8px 10px", color:"#6b7280", fontSize:11, textTransform:"uppercase", fontWeight:600, borderBottom:"1px solid #e5e7eb" },
   td:         { padding:"10px", borderBottom:"1px solid #f3f4f6", verticalAlign:"middle" },
   toast:      { position:"fixed", bottom:20, right:20, background:"#111827", color:"#fff", padding:"12px 20px", borderRadius:10, fontSize:14, zIndex:999 },
+  btnBlueSmall: {
+  padding:"7px 12px",
+  borderRadius:7,
+  background:"#2563eb",
+  color:"#fff",
+  fontSize:12,
+  fontWeight:500,
+  border:"none",
+  cursor:"pointer",
+  marginRight:6
+},
 };
 
 function ConfirmModal({ message, onConfirm, onCancel }) {
@@ -57,6 +68,8 @@ export default function AdminPanel() {
   const [tab,      setTab]     = useState("dashboard");
   const [stats,    setStats]   = useState(null);
   const [users,    setUsers]   = useState([]);
+  const [communities, setCommunities] = useState([]);
+const [selectedCommunity, setSelectedCommunity] = useState({});
   const [flaggedPosts,    setFlaggedPosts]    = useState([]);
   const [reportedPosts,   setReportedPosts]   = useState([]);
   const [flaggedComments, setFlaggedComments] = useState([]);
@@ -72,6 +85,12 @@ export default function AdminPanel() {
   useEffect(() => {
     if (!user || role !== "admin") { navigate("/"); return; }
     fetchStats();
+
+api.get("/communities")
+  .then(res => {
+    setCommunities(res.data.communities || []);
+  })
+  .catch(() => {});
   }, [user]);
 
   const showToast = (msg) => { setToast(msg); setTimeout(() => setToast(""), 3000); };
@@ -111,6 +130,45 @@ export default function AdminPanel() {
     try { await api.put(`/admin/users/${id}/unban`); showToast(`✅ @${username} unbanned`); loadTab("users"); fetchStats(); }
     catch { showToast("❌ Error"); }
   };
+
+  const makeModerator = async (id, username) => {
+  try {
+
+    const communityId = selectedCommunity[id];
+
+    if (!communityId) {
+      showToast("❌ Select a community first");
+      return;
+    }
+
+    await api.put(
+      `/admin/users/${id}/make-moderator`,
+      { communityId }
+    );
+
+    showToast(
+      `✅ @${username} is now a moderator`
+    );
+
+    loadTab("users");
+
+  } catch (e) {
+    showToast(
+      "❌ " +
+      (e.response?.data?.message || "Error")
+    );
+  }
+};
+
+const removeModerator = async (id, username) => {
+  try {
+    await api.put(`/admin/users/${id}/remove-moderator`);
+    showToast(`✅ Moderator removed from @${username}`);
+    loadTab("users");
+  } catch (e) {
+    showToast("❌ " + (e.response?.data?.message || "Error"));
+  }
+};
 
   const removePost = async (id, from) => {
     const ok = await askConfirm("Remove this post permanently?");
@@ -189,40 +247,182 @@ export default function AdminPanel() {
 
           {/* DASHBOARD */}
           {tab==="dashboard" && (
-            <>
-              <div style={S.title}>Dashboard</div>
-              <div style={S.grid}>
-                {[
-                  {icon:"👥", val:stats?.users,           lbl:"Total Users",       color:"#3b82f6"},
-                  {icon:"📝", val:stats?.posts,           lbl:"Total Posts",       color:"#10b981"},
-                  {icon:"💬", val:stats?.comments,        lbl:"Comments",          color:"#8b5cf6"},
-                  {icon:"🏘️", val:stats?.communities,     lbl:"Communities",       color:"#f59e0b"},
-                  {icon:"🚩", val:stats?.flaggedPosts,    lbl:"Flagged Posts",     color:"#ef4444"},
-                  {icon:"📋", val:stats?.reportedPosts,   lbl:"Reported Posts",    color:"#f97316"},
-                  {icon:"⚠️", val:stats?.flaggedComments, lbl:"Flagged Comments",  color:"#ec4899"},
-                  {icon:"🚫", val:stats?.bannedUsers,     lbl:"Banned Users",      color:"#6b7280"},
-                ].map(({icon,val,lbl,color}) => (
-                  <div key={lbl} style={{...S.card, borderTop:`4px solid ${color}`}}>
-                    <div style={S.statIcon}>{icon}</div>
-                    <div style={{...S.statVal, color}}>{val ?? "..."}</div>
-                    <div style={S.statLbl}>{lbl}</div>
-                  </div>
-                ))}
-              </div>
-              <div style={S.panel}>
-                <div style={{fontSize:14,fontWeight:600,color:"#111827",marginBottom:12}}>Quick Actions</div>
-                <button style={S.btnBlue}   onClick={()=>loadTab("flagged-posts")}>🚩 Flagged ({stats?.flaggedPosts||0})</button>
-                <button style={S.btnOrange} onClick={()=>loadTab("reported-posts")}>📋 Reports ({stats?.reportedPosts||0})</button>
-                <button style={S.btnRed}    onClick={()=>loadTab("flagged-comments")}>💬 Comments ({stats?.flaggedComments||0})</button>
-                <button style={S.btnGray}   onClick={()=>loadTab("users")}>👥 Users</button>
-              </div>
-            </>
-          )}
+  <>
+    {/* Welcome */}
+    <div
+      style={{
+        background:"#fff",
+        borderRadius:20,
+        padding:"24px",
+        marginBottom:"20px",
+        border:"1px solid #e5e7eb",
+        boxShadow:"0 4px 20px rgba(0,0,0,.06)"
+      }}
+    >
+      <h1
+        style={{
+          fontSize:"30px",
+          fontWeight:"800",
+          color:"#111827",
+          marginBottom:"8px"
+        }}
+      >
+        Welcome Back Admin 👋
+      </h1>
+
+      <p
+        style={{
+          color:"#6b7280",
+          fontSize:"15px"
+        }}
+      >
+        Here's what's happening in your community today.
+      </p>
+    </div>
+
+    {/* Main Stats */}
+    <div
+      style={{
+        display:"grid",
+        gridTemplateColumns:"repeat(4,1fr)",
+        gap:"18px",
+        marginBottom:"24px"
+      }}
+    >
+      <div style={{
+        background:"#fff",
+        borderRadius:"18px",
+        padding:"24px",
+        boxShadow:"0 4px 20px rgba(0,0,0,.06)"
+      }}>
+        <div style={{fontSize:"28px"}}>👥</div>
+        <h2 style={{fontSize:"34px",margin:"10px 0"}}>{stats?.users || 0}</h2>
+        <p style={{color:"#6b7280"}}>Total Users</p>
+      </div>
+
+      <div style={{
+        background:"#fff",
+        borderRadius:"18px",
+        padding:"24px",
+        boxShadow:"0 4px 20px rgba(0,0,0,.06)"
+      }}>
+        <div style={{fontSize:"28px"}}>📝</div>
+        <h2 style={{fontSize:"34px",margin:"10px 0"}}>{stats?.posts || 0}</h2>
+        <p style={{color:"#6b7280"}}>Total Posts</p>
+      </div>
+
+      <div style={{
+        background:"#fff",
+        borderRadius:"18px",
+        padding:"24px",
+        boxShadow:"0 4px 20px rgba(0,0,0,.06)"
+      }}>
+        <div style={{fontSize:"28px"}}>📋</div>
+        <h2 style={{fontSize:"34px",margin:"10px 0"}}>{stats?.reportedPosts || 0}</h2>
+        <p style={{color:"#6b7280"}}>Total Reports</p>
+      </div>
+
+      <div style={{
+        background:"#fff",
+        borderRadius:"18px",
+        padding:"24px",
+        boxShadow:"0 4px 20px rgba(0,0,0,.06)"
+      }}>
+        <div style={{fontSize:"28px"}}>🏘️</div>
+        <h2 style={{fontSize:"34px",margin:"10px 0"}}>{stats?.communities || 0}</h2>
+        <p style={{color:"#6b7280"}}>Communities</p>
+      </div>
+    </div>
+
+    {/* Bottom Grid */}
+    <div
+      style={{
+        display:"grid",
+        gridTemplateColumns:"2fr 1fr",
+        gap:"20px"
+      }}
+    >
+      {/* Recent Activity */}
+      <div
+        style={{
+          background:"#fff",
+          borderRadius:"18px",
+          padding:"22px",
+          boxShadow:"0 4px 20px rgba(0,0,0,.06)"
+        }}
+      >
+        <h3
+          style={{
+            fontSize:"20px",
+            fontWeight:"700",
+            marginBottom:"20px"
+          }}
+        >
+          Recent Activity
+        </h3>
+
+        <div style={{marginBottom:"14px"}}>
+          🚩 {stats?.flaggedPosts || 0} flagged posts need review
+        </div>
+
+        <div style={{marginBottom:"14px"}}>
+          📋 {stats?.reportedPosts || 0} reports submitted
+        </div>
+
+        <div style={{marginBottom:"14px"}}>
+          💬 {stats?.flaggedComments || 0} flagged comments
+        </div>
+
+        <div>
+          👥 {stats?.users || 0} total registered users
+        </div>
+      </div>
+
+      {/* Community Health */}
+      <div
+        style={{
+          background:"#fff",
+          borderRadius:"18px",
+          padding:"22px",
+          boxShadow:"0 4px 20px rgba(0,0,0,.06)"
+        }}
+      >
+        <h3
+          style={{
+            fontSize:"20px",
+            fontWeight:"700",
+            marginBottom:"20px"
+          }}
+        >
+          Community Health
+        </h3>
+
+        <div style={{marginBottom:"14px"}}>
+          ✅ Active Communities: {stats?.communities || 0}
+        </div>
+
+        <div style={{marginBottom:"14px"}}>
+          🚫 Banned Users: {stats?.bannedUsers || 0}
+        </div>
+
+        <div style={{marginBottom:"14px"}}>
+          🚩 Flagged Posts: {stats?.flaggedPosts || 0}
+        </div>
+
+        <div>
+          💬 Comments: {stats?.comments || 0}
+        </div>
+      </div>
+    </div>
+  </>
+)}
 
           {/* USERS */}
           {tab==="users" && (
             <>
-              <div style={S.title}>👥 Users</div>
+             <div style={S.title}>
+  Users Management
+</div>
               <div style={{display:"flex",gap:10,marginBottom:16}}>
                 <input style={S.search} placeholder="Search by name, email or username..." value={search}
                   onChange={e=>setSearch(e.target.value)} onKeyDown={e=>e.key==="Enter"&&loadTab("users")} />
@@ -263,11 +463,81 @@ export default function AdminPanel() {
                           </td>
                           <td style={{...S.td,fontSize:11,color:"#9ca3af"}}>{timeAgo(u.createdAt)}</td>
                           <td style={S.td}>
-                            {u.isBanned
-                              ? <button style={{...S.btnGreen,padding:"4px 10px",fontSize:11}} onClick={()=>unbanUser(u._id,u.username)}>Unban</button>
-                              : <button style={{...S.btnRed,padding:"4px 10px",fontSize:11}} onClick={()=>banUser(u._id,u.username)}>Ban</button>
-                            }
-                          </td>
+
+ {u.role === "user" && (
+  <>
+    <select
+      value={selectedCommunity[u._id] || ""}
+      onChange={(e) =>
+        setSelectedCommunity(prev => ({
+          ...prev,
+          [u._id]: e.target.value
+        }))
+      }
+      style={{
+        padding:"5px",
+        marginRight:"6px",
+        borderRadius:"6px"
+      }}
+    >
+      <option value="">
+        Select Community
+      </option>
+
+      {communities.map(c => (
+        <option
+          key={c._id}
+          value={c._id}
+        >
+          {c.name}
+        </option>
+      ))}
+    </select>
+
+    <button
+      style={{
+        ...S.btnBlue,
+        padding:"4px 10px",
+        fontSize:11
+      }}
+      onClick={() =>
+        makeModerator(
+          u._id,
+          u.username
+        )
+      }
+    >
+      Make Moderator
+    </button>
+  </>
+)}
+
+  {u.role === "moderator" && (
+    <button
+      style={{...S.btnOrange,padding:"4px 10px",fontSize:11}}
+      onClick={() => removeModerator(u._id, u.username)}
+    >
+      Remove Moderator
+    </button>
+  )}
+
+  {u.isBanned ? (
+    <button
+      style={{...S.btnGreen,padding:"4px 10px",fontSize:11}}
+      onClick={() => unbanUser(u._id, u.username)}
+    >
+      Unban
+    </button>
+  ) : (
+    <button
+      style={{...S.btnRed,padding:"4px 10px",fontSize:11}}
+      onClick={() => banUser(u._id, u.username)}
+    >
+      Ban
+    </button>
+  )}
+
+</td>
                         </tr>
                       ))}
                     </tbody>

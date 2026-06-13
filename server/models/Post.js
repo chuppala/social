@@ -5,6 +5,7 @@ const postSchema = new mongoose.Schema({
   community: { type: mongoose.Schema.Types.ObjectId, ref: "Community", required: true },
   title:     { type: String, required: true, trim: true, maxlength: 300 },
   content:   { type: String, required: true, maxlength: 5000 },
+  image: { type: String, default: "" },
   tag:       { type: String, default: "", trim: true },
   likes:     [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
   saves:     [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],

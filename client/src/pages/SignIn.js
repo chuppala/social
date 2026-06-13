@@ -204,48 +204,128 @@ setError("");
   );
 
   /* ── RENDER: Normal sign in ───────────────────────────── */
-  return (
-    <div className="auth-page">
-      <div className="auth-card">
-        <div className="auth-header">
-          <div className="auth-logo">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><circle cx="12" cy="12" r="10"/><path d="M8 9h8M8 12h6M8 15h4"/></svg>
-            SocialEcho
-          </div>
-          <div className="auth-tagline">Your community, your voice</div>
-        </div>
-        <div className="auth-tabs">
-          <div className="auth-tab active">Sign In</div>
-          <Link className="auth-tab" to="/signup">Sign Up</Link>
-        </div>
-        <div className="auth-body">
-          {ctx && (
-            <div className="ctx-box">
-              <div className="ctx-title">🔍 Detected context</div>
-              <div className="ctx-row"><span>Browser</span><strong>{ctx.browser}</strong></div>
-              <div className="ctx-row"><span>OS</span><strong>{ctx.os}</strong></div>
-              <div className="ctx-row"><span>Time</span><strong>{ctx.time}</strong></div>
-              <div className="ctx-note">Your device fingerprint is checked against trusted devices. Unrecognised devices trigger a security email.</div>
-            </div>
-          )}
-          {error && <div className="alert alert-danger">{error}</div>}
-          <form onSubmit={handleSignin}>
-            <div className="field"><label>Email address</label><input type="email" value={email} onChange={e=>setEmail(e.target.value)} placeholder="you@example.com" autoFocus /></div>
-            <div className="field field-pw">
-              <label>Password</label>
-              <div style={{position:"relative"}}>
-                <input type={pwVis?"text":"password"} value={password} onChange={e=>setPassword(e.target.value)} placeholder="Your password" style={{paddingRight:36}} />
-                <button type="button" className="pw-eye" onClick={()=>setPwVis(v=>!v)}>{pwVis?"🙈":"👁"}</button>
-              </div>
-            </div>
-            <div style={{textAlign:"right",marginBottom:12}}>
-              <span style={{fontSize:12,color:"#2563eb",cursor:"pointer",fontWeight:500}} onClick={()=>setPhase("forgot")}>Forgot password?</span>
-            </div>
-            <button className="btn-main" type="submit" disabled={loading}>{loading?"Signing in...":"Sign in securely"}</button>
-          </form>
-          <div className="footer-link">Don't have an account? <Link to="/signup">Create one free</Link></div>
-        </div>
+    return (
+  <div className="auth-page">
+    <div className="split-auth">
+      
+
+      <div className="split-left">
+        
+         <div
+    style={{
+      display:"flex",
+      alignItems:"center",
+      gap:"12px",
+      marginBottom:"35px"
+    }}
+  >
+    <div
+      style={{
+        width:"52px",
+        height:"52px",
+        borderRadius:"14px",
+        background:"linear-gradient(135deg,#2563eb,#7c3aed)",
+        display:"flex",
+        alignItems:"center",
+        justifyContent:"center",
+        color:"#fff",
+        fontSize:"24px",
+        fontWeight:"700"
+      }}
+    >
+      S
+    </div>
+
+    <div>
+      <div
+        style={{
+          fontSize:"34px",
+          fontWeight:"800",
+          color:"#111827"
+        }}
+      >
+        SocialEcho
+      </div>
+
+      <div
+        style={{
+          color:"#6b7280",
+          fontSize:"14px"
+        }}
+      >
+        Your community, your voice
       </div>
     </div>
-  );
+  </div>
+
+  <h1>Welcome Back 👋</h1>
+        <p className="welcome-text">
+          Join communities, share ideas and connect with people around the world.
+        </p>
+
+        {error && <div className="alert alert-danger">{error}</div>}
+
+        <form onSubmit={handleSignin}>
+          <div className="field">
+            <label>Email address</label>
+            <input
+              type="email"
+              value={email}
+              onChange={e=>setEmail(e.target.value)}
+              placeholder="you@example.com"
+            />
+          </div>
+
+          <div className="field">
+            <label>Password</label>
+            <input
+              type={pwVis ? "text" : "password"}
+              value={password}
+              onChange={e=>setPassword(e.target.value)}
+              placeholder="Your password"
+            />
+          </div>
+
+          <div style={{textAlign:"right",marginBottom:"15px"}}>
+            <span
+              style={{cursor:"pointer",color:"#2563eb"}}
+              onClick={()=>setPhase("forgot")}
+            >
+              Forgot password?
+            </span>
+          </div>
+
+          <button
+            className="btn-main"
+            type="submit"
+            disabled={loading}
+          >
+            {loading ? "Signing in..." : "Sign In"}
+          </button>
+        </form>
+
+        <div className="footer-link">
+          Don't have an account?
+          <Link to="/signup"> Sign Up</Link>
+        </div>
+      </div>
+
+      <div className="split-right">
+        <img
+          src="/login-illustration.svg"
+          alt="SocialEcho"
+          className="split-image"
+        />
+
+        <h2>Discover. Discuss. Connect.</h2>
+
+        <p>
+          Join thousands of communities,
+          share knowledge and build meaningful discussions.
+        </p>
+      </div>
+
+    </div>
+  </div>
+);
 }

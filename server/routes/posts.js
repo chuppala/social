@@ -8,9 +8,11 @@ const { protect, optionalAuth, requireVerified } = require("../middleware/auth")
 const { moderateContent } = require("../middleware/moderation");
 
 const CATEGORY_KEYWORDS = {
+  
   "Travel": [
     "travel","trip","tour","vacation","hotel","flight","beach","mountain"
   ],
+
 
   "Food and Cooking": [
     "food","recipe","cooking","kitchen","meal","restaurant","dish","cook"
@@ -42,7 +44,7 @@ const CATEGORY_KEYWORDS = {
 
   "Health and Fitness": [
     "health","fitness","exercise","workout","diet","gym","nutrition"
-  ]
+  ],
 };
 
 router.get("/", optionalAuth, async (req, res) => {
@@ -73,7 +75,7 @@ router.get("/:id", optionalAuth, async (req, res) => {
 
 router.post("/", protect, requireVerified, async (req, res) => {
   try {
-    const { title, content, community, tag } = req.body;
+    const { title, content, community, tag, image } = req.body;
     if (!title?.trim()||!content?.trim()||!community)
       return res.status(400).json({ message:"Title, content, and community are required." });
     const mod  = await moderateContent(title + " " + content);
@@ -87,7 +89,7 @@ router.post("/", protect, requireVerified, async (req, res) => {
         offTopicWarning = `⚠️ This post doesn't seem related to "${comm.name}". It may not get much engagement here.`;
       }
     }
-    const post = await Post.create({ author:req.user._id, community, title:title.trim(), content:content.trim(), tag:tag||"", isFlagged:mod.isFlagged||offTopic, flagReason:mod.reason||offTopicWarning||"" });
+    const post = await Post.create({ author:req.user._id, community, title:title.trim(), content:content.trim(), tag:tag||"", image,isFlagged:mod.isFlagged||offTopic, flagReason:mod.reason||offTopicWarning||"" });
     const populated = await Post.findById(post._id).populate("author","firstName lastName username avatar").populate("community","name color");
     res.status(201).json({ post:populated, flagged:mod.isFlagged, flagReason:mod.reason, severity:mod.severity, offTopic, offTopicWarning });
   } catch (e) { console.error("CREATE POST:",e.message); res.status(500).json({ message:"Server error." }); }
@@ -130,6 +132,11 @@ router.post("/:id/report", protect, async (req, res) => {
     const { reason, details } = req.body;
     if (!reason) return res.status(400).json({ message:"Reason required." });
     const post = await Post.findById(req.params.id);
+    if (post.author.toString() === req.user._id.toString()) {
+  return res.status(400).json({
+    message: "You cannot report your own post."
+  });
+}
     if (!post||post.isRemoved) return res.status(404).json({ message:"Not found." });
     if (post.reports.some(r=>r.reportedBy.toString()===req.user._id.toString()))
       return res.status(400).json({ message:"Already reported." });

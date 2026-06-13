@@ -1,6 +1,10 @@
 .auth-wrap { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; background: linear-gradient(135deg, #eff6ff 0%, #f0f4ff 100%); }
-.auth-card { background: #fff; border-radius: 16px; border: 1px solid #e5e7eb; width: 100%; max-width: 440px; overflow: hidden; box-shadow: 0 8px 32px rgba(37,99,235,.12); }
-.auth-header { background: linear-gradient(135deg, #2563eb, #1d4ed8); padding: 24px 28px 20px; text-align: center; }
+.auth-card {
+  background: #fff;
+  border-radius: 24px;
+  border: 1px solid #e5e7eb;
+  width: 100%;
+  max-width: 560px;}.auth-header { background: linear-gradient(135deg, #2563eb, #1d4ed8); padding: 12px; text-align: center; }
 .auth-logo { display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 24px; font-weight: 700; color: #fff; margin-bottom: 4px; }
 .auth-logo svg { width: 28px; height: 28px; }
 .auth-tagline { font-size: 12px; color: #bfdbfe; }
@@ -8,7 +12,7 @@
 .auth-tab { flex: 1; padding: 11px; font-size: 13px; font-weight: 500; color: #93c5fd; cursor: pointer; text-align: center; border-bottom: 2px solid transparent; text-decoration: none; display: block; transition: all .15s; }
 .auth-tab.active { color: #fff; border-bottom-color: #fff; background: #2563eb; }
 .auth-tab:hover:not(.active) { color: #dbeafe; }
-.auth-body { padding: 22px 26px 26px; }
+.auth-body { padding: 12px 18px; }
 
 .step-bar { display: flex; align-items: flex-start; margin-bottom: 20px; }
 .step-item { display: flex; flex-direction: column; align-items: center; flex: 1; }
@@ -23,8 +27,19 @@
 
 .field { margin-bottom: 13px; }
 .field label { display: block; font-size: 12px; font-weight: 500; color: #374151; margin-bottom: 4px; }
-.field input, .field select, .field textarea { width: 100%; border: 1px solid #d1d5db; border-radius: 8px; padding: 9px 11px; font-size: 13px; outline: none; transition: border .15s, box-shadow .15s; background: #fff; }
-.field input:focus, .field select:focus, .field textarea:focus { border-color: #2563eb; box-shadow: 0 0 0 3px rgba(37,99,235,.1); }
+.field input,
+.field select,
+.field textarea {
+  width: 100%;
+  height: 42px;
+  border: 1px solid #d1d5db;
+  border-radius: 12px;
+  padding: 0 14px;
+  font-size: 14px;
+  outline: none;
+  transition: border .15s, box-shadow .15s;
+  background: #fff;
+}.field input:focus, .field select:focus, .field textarea:focus { border-color: #2563eb; box-shadow: 0 0 0 3px rgba(37,99,235,.1); }
 .field textarea { resize: none; }
 .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 .field-pw { position: relative; }
@@ -37,8 +52,21 @@
 .check-list li { font-size: 11px; color: #9ca3af; margin-bottom: 2px; }
 .check-list li.ok { color: #16a34a; }
 
-.btn-main { width: 100%; padding: 10px; border-radius: 8px; background: #2563eb; color: #fff; font-size: 14px; font-weight: 500; cursor: pointer; border: none; margin-top: 4px; transition: background .15s; }
-.btn-main:hover:not(:disabled) { background: #1d4ed8; }
+.btn-main {
+  width: 100%;
+  height: 46px;
+  border-radius: 12px;
+  background: linear-gradient(
+    135deg,
+    #2563eb,
+    #7c3aed
+  );
+  color: #fff;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  border: none;
+}.btn-main:hover:not(:disabled) { background: #1d4ed8; }
 .btn-main:disabled { background: #93c5fd; cursor: not-allowed; }
 .btn-ghost { width: 100%; padding: 9px; border-radius: 8px; border: 1px solid #e5e7eb; background: #fff; color: #374151; font-size: 13px; font-weight: 500; cursor: pointer; margin-top: 8px; transition: background .15s; }
 .btn-ghost:hover { background: #f9fafb; }
@@ -216,4 +244,208 @@
 .auth-footer a {
   color: #2563eb;
   font-weight: 600;
+}
+/* ====================================
+   SPLIT AUTH LAYOUT
+==================================== */
+
+.split-auth{
+  width:1200px;
+  max-width:95%;
+  min-height:82vh;
+
+  margin:auto;
+
+  background:#fff;
+  border-radius:24px;
+  overflow:hidden;
+
+  display:flex;
+
+  box-shadow:0 20px 60px rgba(0,0,0,.12);
+}
+
+.split-left{
+  flex:1.15;
+  padding:22px 28px;
+  overflow-y:auto;
+
+  display:flex;
+  flex-direction:column;
+
+  justify-content:flex-start;
+}
+
+.split-right{
+  flex:0.85;
+
+  background:linear-gradient(
+    135deg,
+    #2563eb,
+    #7c3aed
+  );
+
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+
+  text-align:center;
+  color:white;
+
+  padding:20px;
+}
+
+/* ====================================
+   RIGHT SIDE
+==================================== */
+
+.split-image{
+  width:220px;
+  max-width:100%;
+  margin-bottom:18px;
+}
+
+.split-right h2{
+  font-size:16px;
+  font-weight:800;
+  line-height:1.3;
+  margin:0 0 10px;
+}
+
+.split-right p{
+  max-width:250px;
+  font-size:13px;
+  line-height:1.5;
+  margin:0;
+}
+
+.welcome-text{
+  color:#6b7280;
+  margin-bottom:15px;
+}
+
+/* ====================================
+   PROGRESS BAR
+==================================== */
+
+.signup-progress{
+  width:100%;
+  height:8px;
+  background:#e5e7eb;
+  border-radius:999px;
+  overflow:hidden;
+  margin-bottom:8px;
+}
+
+.signup-progress-fill{
+  height:100%;
+  background:linear-gradient(
+    90deg,
+    #2563eb,
+    #7c3aed
+  );
+}
+
+.step-text{
+  text-align:center;
+  font-size:14px;
+  font-weight:600;
+  color:#64748b;
+  margin-bottom:15px;
+}
+
+/* ====================================
+   FORM SPACING
+==================================== */
+
+.form-row{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+  margin-bottom:10px;
+}
+
+.form-group{
+  margin-bottom:10px;
+}
+
+.form-group label{
+  display:block;
+  font-size:13px;
+  font-weight:600;
+  margin-bottom:5px;
+  color:#374151;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select{
+  width:100%;
+  padding:10px 12px;
+  border:1px solid #d1d5db;
+  border-radius:10px;
+  font-size:14px;
+  outline:none;
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus{
+  border-color:#2563eb;
+  box-shadow:0 0 0 3px rgba(37,99,235,.12);
+}
+
+.pw-bar{
+  height:5px;
+  margin-top:6px;
+}
+
+.pw-checks{
+  margin-top:6px;
+  gap:8px;
+}
+
+.check{
+  font-size:11px;
+}
+
+/* ====================================
+   BUTTON
+==================================== */
+
+.btn-main{
+  height:48px;
+  margin-top:8px;
+  border-radius:12px;
+}
+
+/* ====================================
+   FOOTER
+==================================== */
+
+.auth-footer{
+  margin-top:10px;
+  text-align:center;
+}
+
+/* ====================================
+   MOBILE
+==================================== */
+
+@media(max-width:900px){
+
+  .split-right{
+    display:none;
+  }
+
+  .split-auth{
+    width:100%;
+    height:auto;
+  }
+
+  .split-left{
+    width:100%;
+    padding:20px;
+  }
 }

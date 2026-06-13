@@ -157,3 +157,120 @@ exports.devVerify = async (req, res) => {
     res.json({ message:"Email force-verified!", token:signToken(user._id), user:user.toPublic() });
   } catch (e) { res.status(500).json({ message:"Server error: "+e.message }); }
 };
+// =========================
+// ADMIN: MAKE MODERATOR
+// =========================
+
+exports.makeModerator = async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id);
+
+    if (!user)
+      return res.status(404).json({
+        message: "User not found."
+      });
+
+    user.role = "moderator";
+
+    await user.save();
+
+    res.json({
+      message: "User promoted to moderator.",
+      user: user.toPublic()
+    });
+
+  } catch (e) {
+    res.status(500).json({
+      message: "Server error."
+    });
+  }
+};
+
+// =========================
+// ADMIN: REMOVE MODERATOR
+// =========================
+
+exports.removeModerator = async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id);
+
+    if (!user)
+      return res.status(404).json({
+        message: "User not found."
+      });
+
+    user.role = "user";
+
+    await user.save();
+
+    res.json({
+      message: "Moderator removed successfully.",
+      user: user.toPublic()
+    });
+
+  } catch (e) {
+    res.status(500).json({
+      message: "Server error."
+    });
+  }
+};
+
+// =========================
+// ADMIN: BAN USER
+// =========================
+
+exports.banUser = async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id);
+
+    if (!user)
+      return res.status(404).json({
+        message: "User not found."
+      });
+
+    user.isBanned = true;
+
+    user.banReason =
+      req.body.reason || "Banned by admin";
+
+    await user.save();
+
+    res.json({
+      message: "User banned successfully."
+    });
+
+  } catch (e) {
+    res.status(500).json({
+      message: "Server error."
+    });
+  }
+};
+
+// =========================
+// ADMIN: UNBAN USER
+// =========================
+
+exports.unbanUser = async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id);
+
+    if (!user)
+      return res.status(404).json({
+        message: "User not found."
+      });
+
+    user.isBanned = false;
+    user.banReason = "";
+
+    await user.save();
+
+    res.json({
+      message: "User unbanned successfully."
+    });
+
+  } catch (e) {
+    res.status(500).json({
+      message: "Server error."
+    });
+  }
+};

@@ -8,6 +8,7 @@ import Profile        from "./pages/Profile";
 import SavedPosts     from "./pages/SavedPosts";
 import Community      from "./pages/Community";
 import AdminPanel     from "./pages/admin/AdminPanel";
+import Communities from "./pages/Communities";
 import ModeratorPanel from "./pages/moderator/ModeratorPanel";
 
 function PrivateRoute({ children }) {
@@ -34,6 +35,10 @@ function AppRoutes() {
       <Route path="/signin"      element={<GuestRoute><SignIn /></GuestRoute>} />
       <Route path="/signup"      element={<GuestRoute><SignUp /></GuestRoute>} />
       <Route path="*"            element={<Navigate to="/" replace />} />
+      <Route
+  path="/communities"
+  element={<Communities />}
+/>
     </Routes>
   );
 }

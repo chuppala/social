@@ -41,7 +41,9 @@ export default function Navbar({ onSearch }) {
         {user ? (
           <>
             <Link to="/" className="nav-link">Home</Link>
-            <Link to="/saved" className="nav-link">Saved</Link>
+            
+
+
 
             {/* Show Admin for admin role */}
             {role === "admin" && (
@@ -60,15 +62,22 @@ export default function Navbar({ onSearch }) {
   🛡️ Moderator
 </Link>
 
-            <Link to={`/u/${uname}`}>
-              <div className="nav-avatar" title={fname}>
-                {avatar
-                  ? <img src={avatar} alt={fname}
-                      style={{width:"100%",height:"100%",objectFit:"cover",borderRadius:"50%"}} />
-                  : fname?.[0]?.toUpperCase() || "U"
-                }
-              </div>
-            </Link>
+<Link to={`/u/${uname}`}>
+  <div className="nav-avatar">
+    {avatar
+      ? <img src={avatar} alt={fname}
+          style={{
+            width:"100%",
+            height:"100%",
+            objectFit:"cover",
+            borderRadius:"50%"
+          }}
+        />
+      : fname?.[0]?.toUpperCase() || "U"}
+  </div>
+</Link>
+
+            
 
             <button className="nav-btn ghost" onClick={handleLogout}>Sign out</button>
           </>

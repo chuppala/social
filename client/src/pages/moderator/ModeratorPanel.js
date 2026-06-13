@@ -238,15 +238,63 @@ export default function ModeratorPanel() {
             {/* OVERVIEW */}
             {tab === "overview" && stats && (
               <div>
-                <div style={S.title}>c/{selectedComm.name} — Overview</div>
+                <div
+  style={{
+    background:"#fff",
+    borderRadius:18,
+    padding:"24px",
+    marginBottom:"20px",
+    border:"1px solid #e5e7eb",
+    boxShadow:"0 4px 20px rgba(0,0,0,.06)"
+  }}
+>
+  <h1
+    style={{
+      fontSize:"28px",
+      fontWeight:"800",
+      color:"#111827",
+      marginBottom:"8px"
+    }}
+  >
+    Welcome Back Moderator 👋
+  </h1>
+
+  <p
+    style={{
+      color:"#6b7280",
+      fontSize:"14px"
+    }}
+  >
+    Manage your assigned communities and keep discussions healthy.
+  </p>
+</div>
                 <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(140px,1fr))",gap:14,marginBottom:20}}>
                   {[
-                    {label:"Members",         value:stats.members,         color:"#3b82f6", icon:"👥"},
-                    {label:"Total Posts",      value:stats.posts,           color:"#10b981", icon:"📝"},
-                    {label:"Flagged Posts",    value:stats.flaggedPosts,    color:"#ef4444", icon:"🚩"},
-                    {label:"Reported Posts",   value:stats.reportedPosts,   color:"#f97316", icon:"📋"},
-                    {label:"Flagged Comments", value:stats.flaggedComments, color:"#ec4899", icon:"💬"},
-                  ].map(({label,value,color,icon}) => (
+  {
+    label:"Members",
+    value:stats.members,
+    color:"#3b82f6",
+    icon:"👥"
+  },
+  {
+    label:"Total Posts",
+    value:stats.posts,
+    color:"#10b981",
+    icon:"📝"
+  },
+  {
+    label:"Reports",
+    value:stats.reportedPosts,
+    color:"#f97316",
+    icon:"📋"
+  },
+  {
+    label:"Comments",
+    value:stats.flaggedComments,
+    color:"#ec4899",
+    icon:"💬"
+  }
+].map(({label,value,color,icon}) => (
                     <div key={label} style={{background:"#fff",border:"1px solid #e5e7eb",
                       borderRadius:10,padding:16,borderTop:`4px solid ${color}`,textAlign:"center"}}>
                       <div style={{fontSize:22,marginBottom:6}}>{icon}</div>
@@ -255,6 +303,54 @@ export default function ModeratorPanel() {
                     </div>
                   ))}
                 </div>
+                <div
+  style={{
+    background:"#fff",
+    border:"1px solid #e5e7eb",
+    borderRadius:16,
+    padding:"20px",
+    marginBottom:"20px"
+  }}
+>
+  <h3
+    style={{
+      fontSize:"18px",
+      fontWeight:"700",
+      marginBottom:"16px"
+    }}
+  >
+    🏘️ Your Communities
+  </h3>
+
+  <div
+    style={{
+      display:"grid",
+      gridTemplateColumns:"repeat(auto-fill,minmax(220px,1fr))",
+      gap:"12px"
+    }}
+  >
+    {communities.map(c => (
+      <div
+        key={c._id}
+        style={{
+          padding:"12px",
+          border:"1px solid #e5e7eb",
+          borderRadius:"12px",
+          background:"#f9fafb"
+        }}
+      >
+        <div
+          style={{
+            fontWeight:"600",
+            color:"#111827"
+          }}
+        >
+          c/{c.name}
+        </div>
+      </div>
+    ))}
+  </div>
+</div>
                 <div style={S.card}>
                   <div style={{fontSize:14,fontWeight:600,color:"#111827",marginBottom:12}}>Quick Actions</div>
                   <div style={{display:"flex",gap:10,flexWrap:"wrap"}}>
